@@ -41,10 +41,9 @@ def main():
         return (0)
     if (degree == 0):
         if (values[0] != 0):
-            print('One Solution:')
-            print('x = {}'.format(values[0]))
-        else:
             print('Infinity of Solutions')
+        else:
+            print('No Solution')
     elif (degree == 1):
         print('One Solution:')
         print('x = {}'.format(-values[0] / values[1]))
