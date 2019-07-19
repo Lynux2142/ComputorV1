@@ -31,6 +31,7 @@ def printEqu(values, degree):
 def main():
     if (len(sys.argv) != 2):
         print('usage: ./ComputorV1 [equation]')
+        print(' exemple: 5 * X^0 + 4 * X^1 - 9.3 * X^2 = 1 * X^0')
         return (0)
     datas, degree = getDatasDegree(sys.argv[1])
     values = reduceEqu(datas, degree)
