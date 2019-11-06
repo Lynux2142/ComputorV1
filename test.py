@@ -83,7 +83,7 @@ def main():
     equation = split_into_array(equation)
     print(equation)
     a, b, c = reduce_elem(equation)
-    print('{}x^2 + {}x + {}'.format(a, b, c))
+    print('{}x^2 + {}x + {} = 0'.format(a, b, c))
     delta = b ** 2 - 4 * a * c
     print('delta = {}'.format(delta))
     if (delta > 0):
