@@ -8,12 +8,6 @@ from math import sqrt
 def split_and_clear(equation):
     return (sys.argv[1].strip().replace(' ', '').lower().split('='))
 
-def add_Xs(equation):
-    for x in range(len(equation)):
-        for i in range(equation[x]):
-            if (equation[x][i] == 'x'):
-                print('test')
-
 def split_elem(equation, chars):
     array = []
     i = 0
@@ -124,12 +118,8 @@ def main():
         print("usage: ./computorV1 [equation]")
         sys.exit(1)
     equation = split_and_clear(sys.argv[1])
-    print(equation)
-    #equation = add_Xs(equation)
     equation = split_into_array(equation)
-    print(equation)
     equation = group_X(equation)
-    print(equation)
     equation = reduce_equ(equation)
     print_infos(equation)
     if (0 <= equation[0][1] <= 2):
