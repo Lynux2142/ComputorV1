@@ -4,14 +4,8 @@ import sys
 import re
 from math import sqrt
 
-def remove_whitespaces(equation):
-    equation = sys.argv[1].strip()
-    equation = equation.replace(' ', '')
-    equation = equation.lower()
-    return (equation)
-
-def split_equal(equation):
-    return (equation.split('='))
+def split_and_clear(equation):
+    return (sys.argv[1].strip().replace(' ', '').lower().split('='))
 
 def split_elem(equation, chars):
     array = []
@@ -76,9 +70,7 @@ def main():
     if (len(sys.argv) != 2):
         print("usage: ./computorV1 [equation]")
         sys.exit(1)
-    equation = remove_whitespaces(sys.argv[1])
-    print(equation)
-    equation = split_equal(equation)
+    equation = split_and_clear(sys.argv[1])
     print(equation)
     equation = split_into_array(equation)
     print(equation)
