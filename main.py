@@ -20,12 +20,30 @@ def split_elem(equation, chars):
 
 def split_into_array(equation):
     array = []
-    for elem in equation:
-        array.append(split_elem(elem, '+-'))
+    for side in equation:
+        list_group = []
+        elems = re.findall('(?<!\^)([\*\/]?)([+-]?[\d]*\.?[\d]*)(x?\^?)([\d]*)', side)
+        for elem in elems[:-1]:
+            tmp = list(elem)
+            if (not elem[1] or len(elem[1]) == 1 and (elem[1] == '-' or elem[1] == '+')):
+                tmp[1] += '1'
+            if (elem[2]):
+                tmp[2] = 'x^'
+                if (not elem[3]): tmp[3] = '1'
+            else:
+                tmp[2] = 'x^'
+                tmp[3] = '0'
+            list_group.append(''.join(tmp))
+        array.append(split_elem(''.join(list_group), '+-'))
     return (array)
 
 def reduce_elem(elem):
-    array = list(filter(None, re.split(r'([\*\/]?)([+-]?[\d]+\.?[\d]*)\*?(x\^)([+-]?[\d]+)', elem)))
+    tmp = re.findall(r'([\*\/]?)([+-]?[\d]+\.?[\d]*)\*?(x\^)([+-]?[\d]+)', elem)
+    array = []
+    for group in tmp:
+        for elem in group:
+            if (elem):
+                array.append(elem)
     value = float(array[0])
     expo = int(array[2])
     for i in range(3, len(array), 4):
@@ -37,7 +55,7 @@ def reduce_elem(elem):
             expo -= int(array[i + 3])
     return ((value, expo))
 
-def group_X(equation):
+def regroup_X(equation):
     array = []
     for side in equation:
         tmp = []
@@ -48,7 +66,11 @@ def group_X(equation):
 
 def reduce_equ(equation):
     array = []
-    tmp = {}
+    tmp = {
+        2: 0.0,
+        1: 0.0,
+        0: 0.0,
+    }
     for i in range(len(equation)):
         sign = 1.0 if (i == 0) else -1.0
         for elem in equation[i]:
@@ -58,7 +80,9 @@ def reduce_equ(equation):
                 tmp[elem[1]] = (sign * elem[0])
     for i in sorted(tmp.keys(), reverse = True):
         array.append((tmp[i], i))
-    return (array)
+    while (array and array[0][0] == 0.0):
+        del array[0]
+    return (array if (array) else [(0.0, 0.0)])
 
 def print_infos(equation):
     sys.stdout.write('Reduced form:')
@@ -72,13 +96,6 @@ def print_infos(equation):
             sys.stdout.write(f'{abs(elem[0])}')
     print(' = 0.0')
     print(f'Polynomial degree: {equation[0][1]}')
-
-def pgcd(value1, value2):
-    if (value2 == 0):
-        return value1
-    else:
-        r = value1 % value2
-        return (pgcd(value2, r))
 
 def solve_2nd(equation):
     delta = equation[1][0] ** 2 - 4 * equation[0][0] * equation[2][0]
@@ -119,7 +136,7 @@ def main():
         sys.exit(1)
     equation = split_and_clear(sys.argv[1])
     equation = split_into_array(equation)
-    equation = group_X(equation)
+    equation = regroup_X(equation)
     equation = reduce_equ(equation)
     print_infos(equation)
     if (0 <= equation[0][1] <= 2):
