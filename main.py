@@ -86,34 +86,42 @@ def reduce_equ(equation):
 
 def print_infos(equation):
     sys.stdout.write('Reduced form:')
-    for elem in equation:
-        sys.stdout.write(f" {'+' if (elem[0] >= 0) else '-'} ")
-        if (elem[1] > 1):
-            sys.stdout.write(f'{abs(elem[0])}x^{elem[1]}')
-        elif (elem[1] == 1):
-            sys.stdout.write(f'{abs(elem[0])}x')
+    for i in range(len(equation)):
+        sys.stdout.write(f" {'+' if (equation[i][0] >= 0) else '-'}{'' if (i == 0) else ' '}")
+        if (equation[i][1] > 1):
+            sys.stdout.write(f'{abs(equation[i][0])}x^{equation[i][1]}')
+        elif (equation[i][1] == 1):
+            sys.stdout.write(f'{abs(equation[i][0])}x')
         else:
-            sys.stdout.write(f'{abs(elem[0])}')
+            sys.stdout.write(f'{abs(equation[i][0])}')
     print(' = 0.0')
     print(f'Polynomial degree: {equation[0][1]}')
 
 def solve_2nd(equation):
     delta = equation[1][0] ** 2 - 4 * equation[0][0] * equation[2][0]
+    print('calculate delta (b^2 - 4 * a * c):')
+    print(f'{equation[1][0]}^2 - 4 * {equation[0][0]} * {equation[2][0]} = {delta}')
     if (delta > 0):
-        print('Discriminant is strictly possitive, the two solutions are:')
+        print('Discriminant is strictly possitive, the two solutions are ((-b (+-) sqrt(delta)) / (2 * a)):')
+        sys.stdout.write(f'x1 = (-({equation[1][0]}) - sqrt({delta})) / (2 * {equation[0][0]}) = ')
         print(f'{(-equation[1][0] - sqrt(delta)) / (2 * equation[0][0])}')
+        sys.stdout.write(f'x2 = (-({equation[1][0]}) + sqrt({delta})) / (2 * {equation[0][0]}) = ')
         print(f'{(-equation[1][0] + sqrt(delta)) / (2 * equation[0][0])}')
     elif (delta == 0):
-        print('Discriminant is equal to zero, the solution is:')
+        print('Discriminant is equal to zero, the solution is (-b / (2 * a)):')
+        sys.stdout.write(f'x = -({equation[1][0]}) / (2 * {equation[0][0]})')
         print(f'{-equation[1][0] / (2 * equation[0][0])}')
     else:
         print('Discriminant is strictly negative, the two solutions are:')
         lower_div = 2 * equation[0][0]
+        sys.stdout.write(f'z1 = (-({equation[1][0]}) - sqrt(-({delta}))i) / (2 * {equation[0][0]}) = ')
         print(f'{-equation[1][0] / lower_div} - {sqrt(-delta) / lower_div}i')
+        sys.stdout.write(f'z2 = (-({equation[1][0]}) + sqrt(-({delta}))i) / (2 * {equation[0][0]}) = ')
         print(f'{-equation[1][0] / lower_div} + {sqrt(-delta) / lower_div}i')
 
 def solve_1rst(equation):
     print('The solution is:')
+    sys.stdout.write(f'x = -({equation[1][0]}) / {equation[0][0]} = ')
     print(f'{-equation[1][0] / equation[0][0]}')
 
 def solve_nothing(equation):
@@ -121,6 +129,7 @@ def solve_nothing(equation):
         print('All real numbers are solution of the equation')
     else:
         print('The equation is insoluble')
+    print(f'{equation[0][0]} = 0.0')
 
 def solve_equation(equation):
     if (equation[0][1] == 2):
@@ -137,7 +146,18 @@ def main():
     equation = split_and_clear(sys.argv[1])
     equation = split_into_array(equation)
     equation = regroup_X(equation)
+    print('Regroup X with X:')
+    for i in range(len(equation)):
+        if (i == 1):
+            sys.stdout.write(' =')
+        for j in range(len(equation[i])):
+            sys.stdout.write(f" {'+' if (equation[i][j][0] >= 0) else '-'}{'' if (j == 0) else ' '}{abs(equation[i][j][0])}x^{equation[i][j][1]}")
+    print()
     equation = reduce_equ(equation)
+    print('Place all X on the same side')
+    for i in range(len(equation)):
+        sys.stdout.write(f" {'+' if (equation[i][0] >= 0) else '-'}{'' if (i == 0) else ' '}{abs(equation[i][0])}x^{equation[i][1]}")
+    print(' = 0.0')
     print_infos(equation)
     if (0 <= equation[0][1] <= 2):
         solve_equation(equation)
