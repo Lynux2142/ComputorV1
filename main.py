@@ -109,7 +109,7 @@ def solve_2nd(equation):
         print(f'{(-equation[1][0] + sqrt(delta)) / (2 * equation[0][0])}')
     elif (delta == 0):
         print('Discriminant is equal to zero, the solution is (-b / (2 * a)):')
-        sys.stdout.write(f'x = -({equation[1][0]}) / (2 * {equation[0][0]})')
+        sys.stdout.write(f'x = -({equation[1][0]}) / (2 * {equation[0][0]}) = ')
         print(f'{-equation[1][0] / (2 * equation[0][0])}')
     else:
         print('Discriminant is strictly negative, the two solutions are:')
