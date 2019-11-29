@@ -2,7 +2,9 @@
 
 import sys
 import re
-from math import sqrt
+
+def sqrt(value):
+    return (value**(1/2))
 
 def split_and_clear(equation):
     return (equation.strip().replace(' ', '').lower().split('='))
